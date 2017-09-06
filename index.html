@@ -1,0 +1,109 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <title>Form Validation</title>
+        
+        <!--CSS LIb -->
+        <link rel = "stylesheet" href = "node_modules/bootstrap/dist/css/bootstrap.min.css" type = "text/css" />
+        <link rel = "stylesheet" href = "css/custom.css" type = "text/css" />
+        
+        <!-- JS Lib -->
+        <script type = "text/javascript" src = "node_modules/jquery/dist/jquery.min.js"></script>
+        <script type = "text/javascript" src = "node_modules/angular/angular.min.js"></script>
+        <script type = "text/javascript" src = "node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+        <script type = "text/javascript" src = "controllers/FormValidationController.js"></script>
+        <script>
+        $(document).ready(function() {
+            $(".alert-success").hide();
+            $("#btnSubmit").on('click', function() {
+                $(".alert-success").show();
+                window.setTimeout(function () {
+                    $(".alert-success").fadeTo(500, 0).slideUp(500, function () {
+                        $(this).remove();
+                    });
+                }, 5000);
+            });
+        });
+        </script>
+    </head>
+    
+    <body ng-app = "FormValidation" ng-controller = "FormValidationController as frmValidationController" class = "body-bgcolor">
+        <div class ="container">
+            <form name = "frmValidation" novalidate>
+                <!-- Page heading -->
+                <div class ="row">
+                    <div class ="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+                        <div class = "page-header"><h1>AngularJs Form Validation</h1></div>
+                    </div>
+                </div>
+
+                <div class = "row">
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                        <div class="alert alert-success"> <a href="#" class="close" data-dismiss="alert">&times;</a>
+                             <strong>User details saved successfully.</strong> 
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Name -->
+                <div class = "row">
+                    <div class = "col-xs-8 col-sm-8 col-md-8 col-lg-8">
+                        <div class = "form-group" ng-class="{'has-error':frmValidation.name.$invalid && !frmValidation.name.$pristine}">
+                            <label>Name</label>
+                            <input type = "text" name = "name" class = "form-control" ng-model = "frmValidationController.name" required />
+                            <p ng-show = "frmValidation.name.$invalid && !frmValidation.name.$pristine" class = "help-block">Your name is required</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Username -->
+                <div class = "row">
+                    <div class = "col-xs-8 col-sm-8 col-md-8 col-lg-8">
+                        <div class = "form-group" ng-class ="{'has-error': frmValidation.userName.$invalid && !frmValidation.userName.$pristine}">
+                            <label> UserName </label>
+                            <input type = "text" name = "userName" class = "form-control" ng-model = "frmValidationController.userName" ng-minlength = "3" ng-maxlength = "16" required />
+                            <p ng-show = "frmValidation.userName.$error.minlength" class="help-block">UserName is too short</p>
+                            <p ng-show = "frmValidation.userName.$error.maxlength" class="help-block">UserName is too long</p>
+                            <p ng-show = "frmValidation.userName.$invalid && !frmValidation.userName.$pristine && !frmValidation.userName.$error.minlength && !frmValidation.userName.$error.maxlength" class="help-block">Enter valid username</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Email -->
+                <div class = "row">
+                    <div class = "col-xs-8 col-sm-8 col-md-8 col-lg-8">
+                        <div class = "form-group" ng-class = "{'has-error':frmValidation.email.$invalid && !frmValidation.email.$pristine}">
+                            <label>Email </label>
+                            <input type = "email" name = "email" class = "form-control" ng-model = "frmValidationController.email" required />
+                            <p ng-show = "frmValidation.email.$invalid && !frmValidation.email.$pristine" class = "help-block">Enter a valid email</p> 
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Age -->
+                <div class = "row">
+                    <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+                        <div class = "form-group" ng-class = "{'has-error':frmValidation.age.$invalid && !frmValidation.age.$pristine}">
+                            <label>Age </label>
+                            <input type = "number" name = "age" class = "form-control" ng-model ="frmValidationController.age" ng-minlength = "1" ng-maxlength = "3" min = "1" max = "100" required /> 
+                            <p ng-show = "frmValidation.age.$error.min" class = "help-block">Enter age between 1 & 100</p>
+                            <p ng-show = "frmValidation.age.$error.max" class = "help-block">Enter age between 1 & 100</p>
+                            <p ng-show = "frmValidation.age.$error.minlength" class = "help-block">Age value cant be less than 1 digit </p>
+                            <p ng-show = "frmValidation.age.$eeror.maxlength" class = "help-block">Age value cant be more than 3 digits</p>
+                            <p ng-show = "frmValidation.age.$invalid && frmValidation.age.$dirty && !frmValidation.age.$error.min && !frmValidation.age.$error.max && !frmValidation.age.$error.minlength && !frmValidation.age.$error.maxlength" class = "help-block">Enter valid age value</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- buttons -->
+                <div class = "row">
+                    <div class = "col-sm-3 col-xs-3 col-md-3 col-lg-3">
+                        <button type = "submit" name="btnSubmit" id="btnSubmit" class = "btn btn-primary" ng-click = "frmValidationController.submitForm(frmValidation.$valid)" ng-disabled = "!frmValidation.$dirty || frmValidation.$invalid">Submit</button>
+                        <button type = "button" name="btnCancel" class = "btn btn-cancel" ng-click = "frmValidationController.cancel()">Cancel</button>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+    </body>
+</html>
